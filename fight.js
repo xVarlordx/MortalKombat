@@ -1,4 +1,4 @@
-import {player1, player2} from "./players.js";
+import {player1, player2} from "./Game.js";
 import {createElement, getRandomNumber, showTime} from "./utils.js";
 import {$formFight, $arenas} from "./utils.js";
 
@@ -51,6 +51,7 @@ const HIT = {
 }
 const ATTACK = ['head', 'body', 'foot'];
 
+//Объявление победителя
 function playerWin(name) {
     const $winTitle = createElement('div', 'winTitle');
 
@@ -63,6 +64,7 @@ function playerWin(name) {
     return $winTitle;
 }
 
+//Генерация сообщений в чате о ходе боя
 export function generateLogs (type, player1=null, player2=null, value=null, hp=null) {
     let text;
     let el;
@@ -92,17 +94,7 @@ export function generateLogs (type, player1=null, player2=null, value=null, hp=n
     $chat.insertAdjacentHTML('afterbegin', el);
 }
 
-export function enemyAttack() {
-    const hit = ATTACK[getRandomNumber(3)];
-    const defence = ATTACK[getRandomNumber(3)];
-
-    return {
-        value: getRandomNumber(HIT[hit]),
-        hit,
-        defence,
-    }
-}
-
+//Атака и защита игрока
 export function playerAttack () {
     const attack = {};
 
@@ -117,9 +109,24 @@ export function playerAttack () {
         }
         item.checked = false;
     }
+
     return attack;
 }
 
+export const getFight = async () => {
+    const playerChoice = playerAttack()
+
+    const fightData = await fetch('http://reactmarathon-api.herokuapp.com/api/mk/player/fight', {
+        method: 'POST',
+        body: JSON.stringify(playerChoice)
+    }).then(res => res.json());
+
+    return fightData;
+}
+
+
+
+//Результат боя, когда у кого-то закончатся хп
 export function showResult () {
     if (player1.hp === 0 || player2.hp === 0) {
         $fightButton.disabled = true;
@@ -138,6 +145,7 @@ export function showResult () {
     }
 }
 
+//Кнопка перезарузки страницы
  export function createReloadButton () {
     const reloadBtn = createElement('div', 'reloadWrap');
     const btn = createElement('button', 'button');
@@ -146,6 +154,6 @@ export function showResult () {
     $arenas.appendChild(reloadBtn);
 
     btn.addEventListener('click', () => {
-        window.location.reload();
+        window.location.replace("index.html");
     })
 }

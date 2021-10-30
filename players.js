@@ -1,6 +1,6 @@
 import {createElement} from "./utils.js";
 
-class Player {
+export class Player {
     constructor(props) {
         this.player = props.player;
         this.name =  props.name;
@@ -20,19 +20,6 @@ class Player {
 
      renderHP = () => {this.elHP().style.width = this.hp + '%';}
 }
-
-export const player1 = new Player( {
-    player: 1,
-    name: "Scorpion",
-    hp: 100,
-    img: "http://reactmarathon-api.herokuapp.com/assets/scorpion.gif",
-})
-export const player2 =  new Player( {
-    player: 2,
-    name: "Kitana",
-    hp: 100,
-    img: "http://reactmarathon-api.herokuapp.com/assets/kitana.gif",
-})
 
 //Создание игрока
 export const createPlayer = ({player, hp, name, img}) => {
