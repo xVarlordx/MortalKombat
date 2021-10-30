@@ -1,6 +1,3 @@
-import {player1, player2} from "./players.js";
-import {generateLogs} from "./fight.js";
-
 export const $formFight = document.querySelector('.control');
 export const $arenas = document.querySelector('.arenas');
 export const date = new Date();
